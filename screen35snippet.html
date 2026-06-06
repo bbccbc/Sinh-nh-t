@@ -1,0 +1,101 @@
+══════════════════════════════════════════════════════
+     SCREEN 3.5 — Puzzle Game
+     Chèn vào index.html, ngay SAU </section> của screen-3
+     và TRƯỚC <section id="screen-4">
+════════════════════════════════════════════════════════ -->
+
+<!-- Trong <head>, thêm 2 dòng này sau <link rel="stylesheet" href="style.css"> -->
+<!--
+  <link rel="stylesheet" href="puzzle.css">
+-->
+
+<!-- Ở cuối <body>, thêm trước </body> -->
+<!--
+  <script src="puzzle.js"></script>
+-->
+
+
+<section id="screen-3-5" class="screen" role="main" aria-label="Trò chơi ghép hình" style="display:none">
+
+  <p class="puzzle-eyebrow">— thử thách nhỏ —</p>
+
+  <!-- Vùng board + ảnh preview chồng lên nhau -->
+  <div class="puzzle-stage">
+
+    <!-- Ảnh gốc (hiện đầu tiên, ẩn sau khi click) -->
+    <img id="puzzle-preview-img" src="" alt="Ảnh ghép hình" draggable="false" />
+
+    <!-- Peek overlay (xem ảnh gốc tạm thời) -->
+    <div id="peek-overlay"></div>
+
+    <!-- Lưới mảnh ghép -->
+    <div id="puzzle-board" role="grid" aria-label="Bảng ghép hình"></div>
+
+    <!-- Win overlay (hiện khi hoàn thành) -->
+    <div id="puzzle-win">
+      <span class="win-emoji">🎉</span>
+      <p class="win-text">Tuyệt vời! Cậu đã ghép xong rồi ✦</p>
+    </div>
+
+  </div>
+
+  <!-- Annotation: mũi tên cong + "bấm vào đây" -->
+  <div id="puzzle-annotation" class="puzzle-annotation">
+    <span class="annotation-arrow">↩</span>
+    <span class="annotation-text">bấm vào đây</span>
+  </div>
+
+  <!-- Dòng hướng dẫn thứ 2 (hiện sau khi tách mảnh) -->
+  <p id="puzzle-hint-text" class="puzzle-hint-text">
+    giải trò chơi ghép hình này để tiến tới bí mật tiếp theo!
+  </p>
+
+  <!-- Thống kê: số lần di chuyển + đồng hồ -->
+  <div class="puzzle-stats">
+    <div class="stat-item">
+      <span class="stat-num" id="puzzle-moves">0</span>
+      <span class="stat-label">lần di chuyển</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" id="puzzle-timer">00:00</span>
+      <span class="stat-label">thời gian</span>
+    </div>
+  </div>
+
+  <!-- Nút xem ảnh gốc (gợi ý) -->
+  <button id="btn-peek" class="btn-peek" type="button">👁 xem ảnh gốc (2 giây)</button>
+
+  <!-- Footer: quay lại + tiếp tục (nút tiếp tục ẩn đến khi giải xong) -->
+  <div class="puzzle-footer">
+    <button id="back-puzzle" class="btn-ghost" type="button">← Quay lại</button>
+    <button id="puzzle-next" class="btn-mint"  type="button" style="display:none">Tiếp tục &nbsp;→</button>
+  </div>
+
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     HƯỚNG DẪN SỬA script.js
+     Tìm đoạn xử lý sau khi unlock thành công (trong hàm unlock button click)
+     Thay thế dòng chuyển màn sang screen-4 bằng:
+
+     Puzzle.init(config.puzzleImage);
+
+     Ví dụ — tìm đoạn tương tự:
+       showScreen('screen-4');
+       populateGallery();
+     → Thay bằng:
+       Puzzle.init(config.puzzleImage);
+
+════════════════════════════════════════════════════════ -->
+
+
+<!-- ══════════════════════════════════════════════════════
+     HƯỚNG DẪN SỬA data.js
+     Thêm vào object config:
+
+     puzzleImage: 'images/your-photo.jpg',
+     // Dùng ảnh có tỉ lệ 1:1 (vuông) để đẹp nhất
+     // Khuyến nghị: 640×640px hoặc 800×800px
+
+════════════════════════════════════════════════════════

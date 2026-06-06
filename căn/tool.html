@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>💻 Tool Căn Chỉnh Họa Tiết Trực Quan (Desktop View) 💻</title>
+  <style>
+    :root {
+      --bg-dark: #1e1e2e;
+      --panel-bg: #252538;
+      --accent: #cba6f7;
+      --text: #cdd6f4;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    /* Khu vực hiển thị kết quả giả lập màn hình máy tính nằm ngang */
+    #canvas-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      position: relative;
+    }
+    #mock-screen {
+      width: 100%;
+      aspect-ratio: 16 / 10; /* Ép về tỷ lệ màn hình máy tính nằm ngang */
+      max-height: 85vh;
+      background: radial-gradient(ellipse 55% 85% at -8% 65%, #8b9bb8 0%, #9aabc6 30%, #c8d4e4 100%);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+      border: 4px solid #313244;
+    }
+    .mock-title {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 25px;
+      color: #3a3a3a;
+      opacity: 0.6;
+      padding: 0 20px;
+    }
+    /* Đối tượng Decor cho phép kéo thả */
+    .draggable-decor {
+      position: absolute;
+      cursor: move;
+      user-select: none;
+      touch-action: none;
+      border: 1px dashed transparent;
+    }
+    .draggable-decor:hover, .draggable-decor.active {
+      border-color: var(--accent);
+      background: rgba(203, 166, 247, 0.1);
+    }
+    /* Bảng điều khiển bên phải */
+    #control-panel {
+      width: 360px;
+      background-color: var(--panel-bg);
+      border-left: 2px solid #313244;
+      padding: 24px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+    h3 { margin: 0 0 10px 0; color: var(--accent); border-bottom: 1px solid #313244; padding-bottom: 8px; font-size: 1.1rem; }
+    .control-group { display: flex; flex-direction: column; gap: 8px; }
+    label { font-size: 0.85rem; color: #a6adc8; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    select, input[type="file"] {
+      width: 100%; padding: 10px; background: #1e1e2e; border: 1px solid #313244;
+      color: var(--text); border-radius: 8px; box-sizing: border-box;
+    }
+    /* Khu vực hiển thị CSS xuất bản */
+    #css-output {
+      width: 100%; height: 150px; background: #11111b; border: 1px solid #313244;
+      border-radius: 8px; color: #a6e3a1; font-family: monospace; font-size: 0.8rem;
+      padding: 12px; box-sizing: border-box; resize: none; white-space: pre;
+    }
+    .btn {
+      background: var(--accent); color: #11111b; border: none; padding: 12px;
+      border-radius: 8px; font-weight: bold; cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+  <!-- TRẠM TRỰC QUAN KÉO THẢ MÀN HÌNH NGANG (LAPTOP) -->
+  <div id="canvas-container">
+    <div id="mock-screen">
+      <div class="mock-title">💻 Màn hình máy tính giả lập (Kéo thả thoải mái sang 2 góc nhe Châu) 💻</div>
+      <!-- Họa tiết mặc định -->
+      <img src="images/sua-decor.png" id="decor-element" class="draggable-decor" style="top: 15%; left: 10%; width: 100px;" alt="decor" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3022/3022247.png';">
+    </div>
+  </div>
+
+  <!-- BẢNG ĐIỀU KHIỂN CSS -->
+  <div id="control-panel">
+    <h3>🎨 Chọn Ảnh Muốn Căn</h3>
+    <div class="control-group">
+      <label>1. Chọn tệp ảnh từ máy (Thư mục images):</label>
+      <input type="file" id="image-loader" accept="image/*">
+    </div>
+    <div class="control-group">
+      <label>Hoặc gõ/chọn nhanh tên tệp:</label>
+      <select id="image-selector">
+        <option value="images/sua-decor.png">images/sua-decor.png</option>
+        <option value="images/vong-lap-lanh.png">images/vong-lap-lanh.png</option>
+      </select>
+    </div>
+
+    <h3>🎛️ Thanh Điều Chỉnh</h3>
+    <div class="control-group">
+      <label>Kích thước (Width): <span id="val-width">100px</span></label>
+      <input type="range" id="scale-slider" min="30" max="1000" value="100">
+    </div>
+    <div class="control-group">
+      <label>Độ trong suốt (Opacity): <span id="val-opacity">1.0</span></label>
+      <input type="range" id="opacity-slider" min="10" max="100" value="100">
+    </div>
+
+    <h3>📋 Export CSS</h3>
+    <textarea id="css-output" readonly></textarea>
+    <button class="btn" id="btn-copy">📋 Copy Code CSS</button>
+  </div>
+
+  <script>
+    const el = document.getElementById('decor-element');
+    const screen = document.getElementById('mock-screen');
+    const scaleSlider = document.getElementById('scale-slider');
+    const opacitySlider = document.getElementById('opacity-slider');
+    const cssOutput = document.getElementById('css-output');
+    const imageLoader = document.getElementById('image-loader');
+    const imageSelector = document.getElementById('image-selector');
+    
+    let isDragging = false;
+    let startX, startY, initialLeft, initialRight, initialTop;
+    let useRightAxis = false;
+
+    // 1. Đồng bộ thanh trượt kích thước và độ mờ
+    scaleSlider.addEventListener('input', (e) => {
+      el.style.width = e.target.value + 'px';
+      document.getElementById('val-width').innerText = e.target.value + 'px';
+      generateCSS();
+    });
+
+    opacitySlider.addEventListener('input', (e) => {
+      const op = e.target.value / 100;
+      el.style.opacity = op;
+      document.getElementById('val-opacity').innerText = op;
+      generateCSS();
+    });
+
+    // 2. Thay đổi ảnh thật để ngắm trực quan
+    imageLoader.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        el.src = URL.createObjectURL(file);
+      }
+    });
+
+    imageSelector.addEventListener('change', (e) => {
+      el.src = e.target.value;
+      generateCSS();
+    });
+
+    // 3. Logic Kéo Thả theo % màn hình ngang
+    el.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('mouseup', endDrag);
+
+    function startDrag(e) {
+      isDragging = true;
+      el.classList.add('active');
+      const rect = el.getBoundingClientRect();
+      const screenRect = screen.getBoundingClientRect();
+      
+      startX = e.clientX;
+      startY = e.clientY;
+      initialLeft = rect.left - screenRect.left;
+      initialTop = rect.top - screenRect.top;
+      initialRight = screenRect.right - rect.right;
+      
+      // Nếu ảnh được kéo quá nửa màn hình bên phải, tự động chuyển trục sang 'right'
+      useRightAxis = (initialLeft + rect.width / 2) > (screenRect.width / 2);
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      const screenRect = screen.getBoundingClientRect();
+
+      let newTop = ((initialTop + dy) / screenRect.height) * 100;
+      newTop = Math.max(0, Math.min(95, newTop));
+      el.style.top = newTop.toFixed(1) + '%';
+
+      if (useRightAxis) {
+        let newRight = ((initialRight - dx) / screenRect.width) * 100;
+        newRight = Math.max(0, Math.min(95, newRight));
+        el.style.left = 'auto';
+        el.style.right = newRight.toFixed(1) + '%';
+      } else {
+        let newLeft = ((initialLeft + dx) / screenRect.width) * 100;
+        newLeft = Math.max(0, Math.min(95, newLeft));
+        el.style.right = 'auto';
+        el.style.left = newLeft.toFixed(1) + '%';
+      }
+      generateCSS();
+    }
+
+    function endDrag() {
+      isDragging = false;
+      el.classList.remove('active');
+    }
+
+    // 4. Xuất CSS tự động
+    function generateCSS() {
+      const fileName = imageSelector.value.split('/').pop().split('.')[0];
+      const className = `.decor-${fileName || 'họa-tiết'}`;
+      
+      let horizonalProperty = useRightAxis 
+        ? `  right: ${el.style.right || '0%'};` 
+        : `  left: ${el.style.left || '0%'};`;
+
+      cssOutput.value = `${className} {
+  position: absolute;
+  top: ${el.style.top || '15%'};
+${horizonalProperty}
+  width: ${scaleSlider.value}px;
+  height: auto;
+  opacity: ${el.style.opacity || 1};
+  pointer-events: none;
+  z-index: 1;
+}`;
+    }
+
+    document.getElementById('btn-copy').addEventListener('click', () => {
+      cssOutput.select();
+      document.execCommand('copy');
+      alert('Đã copy đoạn CSS! Giờ dán vào file style.css là chuẩn đét luôn.');
+    });
+
+    generateCSS();
+  </script>
+</body>
+</html>

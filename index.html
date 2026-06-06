@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7f4">
+  <title>✉ Bí mật</title>
+
+  <!-- Google Fonts preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="puzzle.css">
+
+  <!-- canvas-confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js" defer></script>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════════════════
+     BIRTHDAY OVERLAY  (June 7 23:00 → June 8 00:00)
+     Controlled entirely by script.js
+════════════════════════════════════════════════════════ -->
+<!-- Background decorative images -->
+<div id="bg-decor" aria-hidden="true">
+  <img class="bg-img bg-img--1" src="image/8.png" alt="">
+</div>  
+
+<div id="birthday-overlay" aria-live="polite">
+
+    <!-- Countdown block -->
+    <p class="countdown-label">Còn một chút nữa thôi...</p>
+
+    <div id="count-block-wrap" class="countdown-display">
+      <div class="count-block">
+        <span class="count-num" id="cnt-h">00</span>
+        <span class="count-label">Giờ</span>
+      </div>
+      <span class="count-sep">:</span>
+      <div class="count-block">
+        <span class="count-num" id="cnt-m">00</span>
+        <span class="count-label">Phút</span>
+      </div>
+      <span class="count-sep">:</span>
+      <div class="count-block">
+        <span class="count-num" id="cnt-s">00</span>
+        <span class="count-label">Giây</span>
+      </div>
+    </div>
+
+    <!-- Cake scene (hidden until countdown hits 0) -->
+    <div id="cake-scene">
+
+      <div class="cake-wrapper">
+        <!-- Candles (4) -->
+        <div class="candle" style="left:42px">
+          <div class="candle-flame"></div>
+        </div>
+        <div class="candle" style="left:60px">
+          <div class="candle-flame"></div>
+        </div>
+        <div class="candle" style="left:78px">
+          <div class="candle-flame"></div>
+        </div>
+        <div class="candle" style="left:96px">
+          <div class="candle-flame"></div>
+        </div>
+
+        <!-- Cake layers -->
+        <div class="cake-layer cake-layer-2">
+          <div class="cake-dot" style="top:14px;left:18px"></div>
+          <div class="cake-dot" style="top:14px;right:18px"></div>
+        </div>
+        <div class="cake-layer cake-layer-1">
+          <div class="cake-dot" style="top:18px;left:16px"></div>
+          <div class="cake-dot" style="top:18px;left:42px"></div>
+          <div class="cake-dot" style="top:18px;right:16px"></div>
+        </div>
+        <div class="cake-plate"></div>
+      </div>
+
+      <p class="cake-msg" id="cake-msg">Nhấn vào bánh để thổi nến nhé! 🕯️</p>
+      <p class="cake-hint">tap the cake</p>
+
+      <button id="cake-continue" class="btn-mint" style="display:none;margin-top:8px">
+        Tiếp tục →
+      </button>
+
+    </div>
+
+  </div><!-- /birthday-overlay -->
+
+
+  <!-- ══════════════════════════════════════════════════════
+     SCREEN 1 — Real-time Greeting
+════════════════════════════════════════════════════════ -->
+  <section id="screen-1" class="screen" role="main" aria-label="Lời chào">
+
+    <div id="greeting-block" class="greeting-block">
+      <p class="greeting-eyebrow">— từ tớ, gửi cậu —</p>
+      <h1 class="greeting-text" id="greeting-text">
+        Xin chào...
+      </h1>
+      <div class="greeting-deco">
+        <span class="deco-line" style="background:linear-gradient(90deg,transparent,rgba(150,200,175,0.5))"></span>
+        <span class="deco-dot"></span>
+        <span class="deco-line" style="background:linear-gradient(270deg,transparent,rgba(150,200,175,0.5))"></span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 
+══════════════════════════════════════════════════════
+     SCREEN 2 — Scheduler Form
+════════════════════════════════════════════════════════ -->
+
+  <section id="screen-2" class="screen" role="main" aria-label="Lịch thứ Hai" style="display:none">
+
+    <p class="scheduler-title" id="scheduler-title">
+      <!-- Filled from config.schedulerTitle via inline script below -->
+    </p>
+
+    <!-- Time-slot radio cards -->
+    <div id="slot-grid" class="slot-grid" role="group" aria-label="Chọn khung giờ">
+      <!-- Populated by script.js populateSlots() -->
+    </div>
+
+    <!-- Optional message textarea -->
+    <textarea id="scheduler-msg" class="message-area" rows="3" maxlength="400"
+      placeholder="Nếu có gì cậu muốn gửi gắm tới tớ..." aria-label="Tin nhắn gửi kèm"></textarea>
+
+    <!-- Status -->
+    <p id="send-status" class="send-status" role="status"></p>
+
+    <!-- Submit -->
+    <div
+      style="display: flex; flex-direction: row; flex-wrap: nowrap; gap: 16px; justify-content: center; align-items: center; margin-top: 24px; width: 100%;">
+      <button id="btn-nope" class="btn-nope" type="button" style="margin: 0; width: auto;">Không thèm ✦</button>
+      <button id="confirm-btn" class="btn-mint" type="button" style="margin: 0; width: auto;">Xác nhận &nbsp;✦</button>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+     SCREEN 3 — Password Lock
+════════════════════════════════════════════════════════ -->
+
+  <section id="screen-3" class="screen" role="main" aria-label="Màn hình khóa" style="display:none">
+
+    <div class="lock-card glass-card">
+
+      <div class="lock-icon" aria-hidden="true">🔒</div>
+
+      <h2 class="lock-title" id="lock-hint">
+        <!-- Filled below -->
+      </h2>
+
+      <p class="lock-sub" id="lock-sub">
+        <!-- Filled below -->
+      </p>
+
+      <!-- Password input -->
+      <div class="pw-wrap">
+        <input id="pw-input" class="pw-input" type="password" inputmode="numeric" maxlength="12" placeholder="· · · ·"
+          autocomplete="off" aria-label="Mật khẩu" />
+      </div>
+
+      <!-- Error message -->
+      <p id="pw-error" class="pw-error" role="alert"></p>
+
+      <!-- Unlock -->
+      <button id="unlock-btn" class="btn-mint" type="button">
+        Mở khóa &nbsp;
+      </button>
+
+    </div>
+    <!-- thêm ngay sau </div> của .lock-card -->
+    <button id="back-3" class="btn-ghost" type="button" style="margin-top:16px">
+      ← Quay lại
+    </button>
+
+  </section>
+
+
+<!-- ══════════════════════════════════════════════════════
+       SCREEN 3.5 — Puzzle Game
+  ════════════════════════════════════════════════════════ -->
+  <section id="screen-3-5" class="screen" role="main" aria-label="Trò chơi ghép hình" style="display:none">
+
+    <p class="puzzle-eyebrow">— thử thách nhỏ —</p>
+
+    <div class="puzzle-container">
+      
+      <!-- Cột Trái: Chỉ giữ lại Game và mũi tên hướng dẫn -->
+      <div class="puzzle-left-col">
+        <!-- Vùng board + ảnh preview chồng lên nhau -->
+        <div class="puzzle-stage">
+          <!-- Ảnh gốc (hiện đầu tiên, ẩn sau khi click) -->
+          <img id="puzzle-preview-img" src="" alt="Ảnh ghép hình" draggable="false" />
+          <!-- Peek overlay (xem ảnh gốc tạm thời) -->
+          <div id="peek-overlay"></div>
+          <!-- Lưới mảnh ghép -->
+          <div id="puzzle-board" role="grid" aria-label="Bảng ghép hình"></div>
+        </div>
+
+        <!-- Annotation: mũi tên cong + "bấm vào đây" -->
+        <div id="puzzle-annotation" class="puzzle-annotation">
+          <span class="annotation-arrow">↩</span>
+          <span class="annotation-text">bấm vào đây</span>
+        </div>
+      </div>
+
+      <!-- Cột Phải: Hướng dẫn / Thông báo Chiến thắng (dạng glass-card) -->
+      <div class="puzzle-right-col glass-card" id="puzzle-info-card">
+        <!-- Trạng thái thường: Luật chơi -->
+        <div id="puzzle-instructions">
+          <h3 class="info-title">📜 Hướng dẫn</h3>
+          <p class="info-desc">
+            Đầu tiên, nhấn nhẹ vào ảnh nhé. Sau đó click vào một mảnh ghép để chọn, sau đó click vào mảnh ghép khác để hoán đổi vị trí. 
+            Xếp đúng bức ảnh đáng iu này để mở khóa bí mật tiếp theo nhée!
+          </p>
+        </div>
+
+        <!-- Trạng thái thắng: Chúc mừng (mặc định ẩn) -->
+        <div id="puzzle-win" style="display:none">
+          <span class="win-emoji">🎉</span>
+          <h3 class="win-title">Thắng rùii!</h3>
+          <p class="win-desc">Tuyệt vời! Cậu đã ghép xong bức ảnh đáng iu nhất tg rùi đó!! ✦</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Hàng Dưới: Căn giữa tuyệt đối -->
+    <div class="puzzle-bottom-section">
+      <!-- Dòng hướng dẫn thứ 2 (hiện sau khi tách mảnh) -->
+      <p id="puzzle-hint-text" class="puzzle-hint-text">
+        giải trò chơi ghép hình này để tiến tới bí mật tiếp theo!
+      </p>
+
+      <!-- Thống kê: số lần di chuyển + đồng hồ -->
+      <div class="puzzle-stats">
+        <div class="stat-item">
+          <span class="stat-num" id="puzzle-moves">0</span>
+          <span class="stat-label">lần di chuyển</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" id="puzzle-timer">00:00</span>
+          <span class="stat-label">thời gian</span>
+        </div>
+      </div>
+
+      <!-- Nút xem ảnh gốc (gợi ý) -->
+      <button id="btn-peek" class="btn-peek" type="button">👁 xem ảnh gốc (2 giây)</button>
+
+      <!-- Footer: quay lại + tiếp tục (nút tiếp tục ẩn đến khi giải xong) -->
+      <div class="puzzle-footer">
+        <button id="back-puzzle" class="btn-ghost" type="button">← Quay lại</button>
+        <button id="puzzle-next" class="btn-mint" type="button" style="display:none">Tiếp tục &nbsp;→</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+     SCREEN 3.8 — Transitional greeting (3.5 → 4)
+  ════════════════════════════════════════════════════════ -->
+  <section id="screen-3-8" class="screen" role="main" aria-label="Lời dẫn bộ ảnh" style="display:none">
+    <div id="greeting-block-38" class="greeting-block">
+      <p class="greeting-eyebrow">— và tiếp theo —</p>
+      <h1 class="greeting-text">
+        Bây giờ, hãy ngắm bản thân trong mắt tớ nhé!
+      </h1>
+      <div class="greeting-deco">
+        <span class="deco-line" style="background:linear-gradient(90deg,transparent,rgba(150,200,175,0.5))"></span>
+        <span class="deco-dot"></span>
+        <span class="deco-line" style="background:linear-gradient(270deg,transparent,rgba(150,200,175,0.5))"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+     SCREEN 4 — Photo Gallery
+     (scrollable, overflow-y: auto when active)
+  ════════════════════════════════════════════════════════ -->
+  <section id="screen-4" class="screen" role="main" aria-label="Bộ ảnh kỷ niệm" style="display:none">
+
+    <header class="gallery-header fade-enter">
+
+      <p>a small collection, just for you</p>
+    </header>
+
+    <!-- Gallery grid — populated by script.js populateGallery() -->
+    <div id="gallery-grid" class="gallery-grid" role="list" aria-label="Bộ ảnh"></div>
+
+    <!-- thêm ngay trước <div class="gallery-next-wrap"> -->
+    <div style="display:flex;gap:12px;justify-content:center;width:100%;margin-top:48px">
+      <button id="back-4" class="btn-ghost" type="button">← Quay lại</button>
+      <button id="gallery-next" class="btn-mint" type="button">Tiếp tục &nbsp;→</button>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+     SCREEN 4.5 — Transitional letter intro (4 → 5)
+  ════════════════════════════════════════════════════════ -->
+  <section id="screen-4-5" class="screen" role="main" aria-label="Lời dẫn bức thư" style="display:none">
+    <div id="intro-block-45" class="intro-block-45">
+      <p class="greeting-eyebrow">— lời gửi gắm —</p>
+      <p class="intro-text-45">
+        Sinh nhật năm nay rồi cũng sẽ trở thành một kỷ niệm đẹp trong rất nhiều năm tháng sau này…
+      </p>
+      <p class="intro-text-45-sub">
+        nên tớ muốn để lại cho cậu một lá thư thật đặc biệt.
+      </p>
+      <div class="intro-deco-45">
+        <span class="deco-dot"></span>
+        <span class="deco-dot" style="animation-delay: 0.2s"></span>
+        <span class="deco-dot" style="animation-delay: 0.4s"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+     SCREEN 5 — Secret Letter
+  ════════════════════════════════════════════════════════ -->
+  <section id="screen-5" class="screen" role="main" aria-label="Bức thư bí mật" style="display:none">
+
+    <!-- thêm ngay trước </div> đóng .letter-wrap -->
+    <div style="display:flex;justify-content:center;margin-top:8px">
+      <button id="back-5" class="btn-ghost" type="button">← Quay lại</button>
+    </div>
+
+    <div class="letter-wrap">
+
+      <article class="letter-paper glass-card" aria-live="polite">
+
+        <p class="letter-to" id="letter-to">
+          <!-- Filled below -->
+        </p>
+
+        <!-- Typewriter output -->
+        <div class="letter-body" id="letter-body"></div>
+
+        <p class="letter-sign">— bc</p>
+
+      </article>
+
+      <!-- Decoration that appears after typewriter completes -->
+      <div id="letter-deco" class="letter-deco">
+        <span class="mint-leaf-deco">🍃</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ── Inline bootstrap (fills config-driven text without extra fetch) ── -->
+  <script src="data.js"></script>
+  <script>
+    // Fill static text from config before script.js runs
+    (function () {
+      const q = id => document.getElementById(id);
+      if (q('scheduler-title')) q('scheduler-title').textContent = config.schedulerTitle;
+      if (q('lock-hint')) q('lock-hint').textContent = config.lockHint;
+      if (q('lock-sub')) q('lock-sub').textContent = config.lockSub;
+      if (q('letter-to')) q('letter-to').textContent = config.letterTitle;
+    })();
+  </script>
+  <script src="puzzle.js"></script>
+  <script src="script.js"></script>
+  
+
+</body>
+
+</html>

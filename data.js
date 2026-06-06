@@ -16,7 +16,7 @@ const config = {
   /* ── Webhook (Discord / Telegram / Make / n8n) ───────────
      Paste your webhook URL here. Leave empty string "" to
      skip sending and just log to console instead.          */
-  webhookUrl: "d95f40a0-e244-4fc8-bd1a-116cd87f46e6",
+  webhookUrl: "1e6ecbe5-33a3-4c2d-b9cc-2742df17d469",
 
   /* ── Screen 2 — Scheduler ───────────────────────────────── */
   schedulerTitle: "･ﾟ☆･ﾟHệ thống này cần xác nhận khung giờ rảnh của cậu vào thứ Hai để kích hoạt một bất ngờ!!･ﾟ✧･ﾟ",

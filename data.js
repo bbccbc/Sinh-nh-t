@@ -44,7 +44,7 @@ const config = {
     { url: "image/hg6.jpg", caption: "...cậu chụp ảnh rất đẹp" },
     { url: "image/hg7.jpg", caption: "ngầu đétttt" },
     { url: "image/hg8.PNG", caption: "thích ảnh này lắm í" },
-    { url: "image/mèo.JPG", caption: "năm nay có thêm nàng mèo đón sinh nhật cùng nhá >< giao diện hổ báo, bát nháo iu emm" },
+    { url: "image/mèo.jpg", caption: "năm nay có thêm nàng mèo đón sinh nhật cùng nhá >< giao diện hổ báo, bát nháo iu emm" },
   ],
 
   /* ── Screen 5 — Letter ──────────────────────────────────── */

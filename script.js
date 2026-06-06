@@ -283,25 +283,27 @@ function startTypewriter() {
 // ── Send to Email ───────────────────
 async function sendToEmail(slot, message) {
   try {
-    // Gọi API Web3Forms bằng mã Access Key bạn đã dán trong data.js (config.webhookUrl)
     const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: { 
-        "Content-Type": "application/json", 
-        "Accept": "application/json" 
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       },
       body: JSON.stringify({
-        access_key: config.webhookUrl, // Tự động lấy mã token từ data.js
-        title: "📬 Có lời nhắn sinh nhật mới từ Website!",
+        access_key: config.webhookUrl,
+        subject: "📬 Có lời nhắn sinh nhật mới từ Website!",  // ← đổi "title" → "subject"
+        from_name: "Birthday Web",                             // ← thêm field này
         "Khung giờ rảnh": slot,
-        "Lời nhắn gửi": message
+        "Lời nhắn gửi": message || "(không có lời nhắn)"
       }),
     });
-    
-    return res.ok;
+
+    const data = await res.json();          // ← parse body thay vì chỉ check res.ok
+    console.log("Web3Forms response:", data); // để debug trên GitHub Pages
+    return data.success === true;           // ← check đúng field
   } catch (err) {
     console.error("Lỗi mạng:", err);
-    return false; // network error — UI vẫn xử lý đi tiếp mượt mà
+    return false;
   }
 }
 

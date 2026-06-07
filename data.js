@@ -16,7 +16,7 @@ const config = {
   /* ── Webhook (Discord / Telegram / Make / n8n) ───────────
      Paste your webhook URL here. Leave empty string "" to
      skip sending and just log to console instead.          */
-  webhookUrl: "1e6ecbe5-33a3-4c2d-b9cc-2742df17d469",
+  webhookUrl: "8999b326-a085-4f14-bc75-7b3fb96c3157",
 
   /* ── Screen 2 — Scheduler ───────────────────────────────── */
   schedulerTitle: "･ﾟ☆･ﾟHệ thống này cần xác nhận khung giờ rảnh của cậu vào thứ Hai để kích hoạt một bất ngờ!!･ﾟ✧･ﾟ",
@@ -57,5 +57,5 @@ const config = {
   birthdayYear: 2025,   // Change year if needed
   birthdayMonth: 6,      // June = 6
   birthdayDay: 8,      // Birthday is June 8
-  birthdayCakeMessage: "Sinh nhật vui vẻ, Hagiang! 🎂🌿",
+  birthdayCakeMessage: "Sinh nhật vui vẻ nhé, Hagiang",
 };

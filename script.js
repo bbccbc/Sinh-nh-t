@@ -39,7 +39,11 @@ const letterDeco = $('letter-deco');
 document.addEventListener('DOMContentLoaded', () => {
   populateSlots();
   setupEvents();
-  isBirthdayCountdownTime() ? startBirthdayMode() : startNormalFlow();
+  if (isBirthdayCountdownTime() || isBirthdayTime()) {
+    startBirthdayMode();
+  } else {
+    startNormalFlow();
+  }
 });
 
 // ── Birthday Time Check ───────────────────────────────────────
@@ -63,9 +67,14 @@ function startBirthdayMode() {
   birthdayMode = true;
   document.body.style.overflow = 'hidden';
   bdOverlay.classList.add('active');
-  cakeScene.classList.remove('visible');
-  countBlock.style.display = 'flex';
-  tickCountdown();
+  
+  if (isBirthdayTime()) {
+    showCakeScene();
+  } else {
+    cakeScene.classList.remove('visible');
+    countBlock.style.display = 'flex';
+    tickCountdown();
+  }
 }
 
 function tickCountdown() {
@@ -86,12 +95,21 @@ function tickCountdown() {
 function showCakeScene() {
   countBlock.style.display = 'none';
   cakeScene.classList.add('visible');
+  
+  // Khi màn hình bánh kem hiện ra, đổi chữ của countdown-label thành câu thổi nến
+  const label = document.getElementById('countdown-label');
+  if (label) {
+    label.textContent = 'thổi nến nàoo..:*☆';
+  }
 }
 
 function blowCandles() {
   if (candlesBlown) return;
   candlesBlown = true;
-  document.querySelectorAll('.candle-flame').forEach(f => f.classList.add('out'));
+  
+  // Thêm class 'out' vào .candle thay vì .candle-flame
+  document.querySelectorAll('.candle').forEach(c => c.classList.add('out'));
+  
   launchConfetti();
   $('cake-msg').textContent = config.birthdayCakeMessage;
   setTimeout(() => { $('cake-continue').style.display = 'inline-flex'; }, 1_500);
@@ -283,18 +301,18 @@ function startTypewriter() {
 // ── Send to Email ───────────────────
 async function sendToEmail(slot, message) {
   try {
+    // Gọi API Web3Forms bằng mã Access Key bạn đã dán trong data.js (config.webhookUrl)
     const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+      headers: { 
+        "Content-Type": "application/json", 
+        "Accept": "application/json" 
       },
       body: JSON.stringify({
-        access_key: config.webhookUrl,
-        subject: "📬 Có lời nhắn sinh nhật mới từ Website!",  // ← đổi "title" → "subject"
-        from_name: "Birthday Web",                             // ← thêm field này
+        access_key: config.webhookUrl, // Tự động lấy mã token từ data.js
+        title: "📬 Có lời nhắn sinh nhật mới từ Website!",
         "Khung giờ rảnh": slot,
-        "Lời nhắn gửi": message || "(không có lời nhắn)"
+        "Lời nhắn gửi": message
       }),
     });
 

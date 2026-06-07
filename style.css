@@ -47,22 +47,16 @@ body {
   min-height: 100dvh;
   overflow: hidden;
   position: relative;
-  background-color: #b8c4d4;
-  background-image:
-    radial-gradient(ellipse 55% 85% at -8% 65%, #8a9bb8 0%, #9aabc6 30%, transparent 62%),
-    radial-gradient(ellipse 35% 70% at 8% 30%, #dde5f2 0%, #c8d4e4 25%, transparent 55%),
-    radial-gradient(ellipse 28% 38% at 52% 38%, #f2f5fa 0%, #e0e8f4 35%, transparent 60%),
-    radial-gradient(ellipse 22% 28% at 54% 56%, #8090ac 0%, #96a6be 40%, transparent 65%),
-    radial-gradient(ellipse 50% 90% at 108% 45%, #9aabbe 0%, #adbdd0 35%, transparent 60%),
-    radial-gradient(ellipse 30% 55% at 88% 15%, #dce5f0 0%, #c6d4e4 30%, transparent 58%),
-    radial-gradient(ellipse 55% 50% at 95% 92%, #ccd8ea 0%, transparent 55%),
-    linear-gradient(145deg, #c4cedc 0%, #b2bece 35%, #bac6d6 65%, #c0cad8 100%);
+  background: #b8c4d4; /* gradient chuyển vào SVG bên dưới */
 }
 
 body::before {
   content: '';
   position: fixed;
-  inset: 0;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
   pointer-events: none;
   z-index: 0;
   background-image:
@@ -89,22 +83,15 @@ body::before {
   filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.10));
   user-select: none;
   will-change: transform;
+  transform-box: fill-box;       /* thêm */
+  transform-origin: center;      /* thêm */
 }
 
 /* Vị trí từng ảnh — chỉnh top/left/width tuỳ ý */
 .bg-img--1 {
-  width: 100vw;
-  height: 100dvh;
-  left: 0;
-  top: 0;
-  object-fit: contain;
-  /* giữ tỉ lệ, không crop */
-  transform: none !important;
+  /* bỏ hết: width, height, left, top, object-fit, transform, opacity */
+  /* tất cả chuyển thành attributes trong <image> tag */
   opacity: 0.15;
-}
-
-/* Gentle float animation */
-.bg-img--1 {
   animation: bgFloat1 7s ease-in-out infinite;
 }
 
@@ -147,22 +134,6 @@ body::before {
 @media (max-width: 480px) {
   .bg-img {
     opacity: 0.5;
-  }
-
-  .bg-img--1 {
-    width: 110px;
-  }
-
-  .bg-img--2 {
-    width: 100px;
-  }
-
-  .bg-img--3 {
-    display: none;
-  }
-
-  .bg-img--4 {
-    width: 90px;
   }
 }
 

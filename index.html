@@ -26,9 +26,72 @@
      Controlled entirely by script.js
 ════════════════════════════════════════════════════════ -->
 <!-- Background decorative images -->
-<div id="bg-decor" aria-hidden="true">
-  <img class="bg-img bg-img--1" src="image/8.png" alt="">
-</div>  
+<svg id="bg-decor"
+     viewBox="0 0 1440 900"
+     preserveAspectRatio="xMidYMid slice"
+     xmlns="http://www.w3.org/2000/svg"
+     aria-hidden="true"
+     style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;">
+
+  <defs>
+    <!-- Base linear gradient -->
+    <linearGradient id="lg-base" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#c4cedc"/>
+      <stop offset="35%" stop-color="#b2bece"/>
+      <stop offset="65%" stop-color="#bac6d6"/>
+      <stop offset="100%" stop-color="#c0cad8"/>
+    </linearGradient>
+
+    <!-- 7 radial gradients scaled from the original CSS -->
+    <radialGradient id="rg1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(-115.2, 585) scale(792, 765)">
+      <stop offset="0%" stop-color="#8a9bb8"/>
+      <stop offset="30%" stop-color="#9aabc6"/>
+      <stop offset="62%" stop-color="#9aabc6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rg2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(115.2, 270) scale(504, 630)">
+      <stop offset="0%" stop-color="#dde5f2"/>
+      <stop offset="25%" stop-color="#c8d4e4"/>
+      <stop offset="55%" stop-color="#c8d4e4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rg3" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(748.8, 342) scale(403.2, 342)">
+      <stop offset="0%" stop-color="#f2f5fa"/>
+      <stop offset="35%" stop-color="#e0e8f4"/>
+      <stop offset="60%" stop-color="#e0e8f4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rg4" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(777.6, 504) scale(316.8, 252)">
+      <stop offset="0%" stop-color="#8090ac"/>
+      <stop offset="40%" stop-color="#96a6be"/>
+      <stop offset="65%" stop-color="#96a6be" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rg5" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1555.2, 405) scale(720, 810)">
+      <stop offset="0%" stop-color="#9aabbe"/>
+      <stop offset="35%" stop-color="#adbdd0"/>
+      <stop offset="60%" stop-color="#adbdd0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rg6" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1267.2, 135) scale(432, 495)">
+      <stop offset="0%" stop-color="#dce5f0"/>
+      <stop offset="30%" stop-color="#c6d4e4"/>
+      <stop offset="58%" stop-color="#c6d4e4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rg7" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1368, 828) scale(792, 450)">
+      <stop offset="0%" stop-color="#ccd8ea"/>
+      <stop offset="55%" stop-color="#ccd8ea" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background layers -->
+  <rect width="1440" height="900" fill="url(#lg-base)"/>
+  <rect width="1440" height="900" fill="url(#rg1)"/>
+  <rect width="1440" height="900" fill="url(#rg2)"/>
+  <rect width="1440" height="900" fill="url(#rg3)"/>
+  <rect width="1440" height="900" fill="url(#rg4)"/>
+  <rect width="1440" height="900" fill="url(#rg5)"/>
+  <rect width="1440" height="900" fill="url(#rg6)"/>
+  <rect width="1440" height="900" fill="url(#rg7)"/>
+
+  <!-- Decorative images scaled to viewBox -->
+  <image class="bg-img bg-img--1" href="image/8.png" x="0" y="0" width="1440" height="900" preserveAspectRatio="xMidYMid meet"/>
+</svg>
 
 <div id="birthday-overlay" aria-live="polite">
 

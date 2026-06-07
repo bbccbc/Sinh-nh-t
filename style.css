@@ -86,7 +86,7 @@ body::before {
   position: absolute;
   object-fit: contain;
   opacity: 0.82;
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.10));
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.10));
   user-select: none;
   will-change: transform;
 }
@@ -97,33 +97,73 @@ body::before {
   height: 100dvh;
   left: 0;
   top: 0;
-  object-fit: contain;  /* giữ tỉ lệ, không crop */
+  object-fit: contain;
+  /* giữ tỉ lệ, không crop */
   transform: none !important;
   opacity: 0.15;
 }
 
 /* Gentle float animation */
-.bg-img--1 { animation: bgFloat1 7s ease-in-out infinite; }
-.bg-img--2 { animation: bgFloat2 8s ease-in-out infinite; }
-.bg-img--3 { animation: bgFloat1 9s ease-in-out infinite 1s; }
-.bg-img--4 { animation: bgFloat2 7.5s ease-in-out infinite 0.5s; }
+.bg-img--1 {
+  animation: bgFloat1 7s ease-in-out infinite;
+}
+
+.bg-img--2 {
+  animation: bgFloat2 8s ease-in-out infinite;
+}
+
+.bg-img--3 {
+  animation: bgFloat1 9s ease-in-out infinite 1s;
+}
+
+.bg-img--4 {
+  animation: bgFloat2 7.5s ease-in-out infinite 0.5s;
+}
 
 @keyframes bgFloat1 {
-  0%, 100% { transform: translateY(0) rotate(-8deg); }
-  50%       { transform: translateY(-12px) rotate(-6deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(-6deg);
+  }
 }
 
 @keyframes bgFloat2 {
-  0%, 100% { transform: translateY(0) rotate(6deg); }
-  50%       { transform: translateY(-10px) rotate(8deg); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(6deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(8deg);
+  }
 }
 
 @media (max-width: 480px) {
-  .bg-img { opacity: 0.5; }
-  .bg-img--1 { width: 110px; }
-  .bg-img--2 { width: 100px; }
-  .bg-img--3 { display: none; }
-  .bg-img--4 { width: 90px; }
+  .bg-img {
+    opacity: 0.5;
+  }
+
+  .bg-img--1 {
+    width: 110px;
+  }
+
+  .bg-img--2 {
+    width: 100px;
+  }
+
+  .bg-img--3 {
+    display: none;
+  }
+
+  .bg-img--4 {
+    width: 90px;
+  }
 }
 
 /* ── Screen Base ── */
@@ -191,7 +231,9 @@ body::before {
   opacity: 0 !important;
   pointer-events: none !important;
   transition: opacity 0.6s ease, background 1.2s ease !important;
-  background: linear-gradient(160deg, #f0faf4 0%, #e6f5ec 60%, #d8eedd 100%);
+  background: transparent !important;
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
 }
 
 #birthday-overlay.active {
@@ -215,11 +257,10 @@ body::before {
 
 /* Countdown */
 .countdown-label {
-  font-family: var(--font-serif);
+  font-family: var(--font-body);
   font-size: clamp(1rem, 3vw, 1.3rem);
-  color: var(--text-mid);
+  color: #89919e;
   letter-spacing: 0.08em;
-  font-style: italic;
 }
 
 .countdown-display {
@@ -272,12 +313,15 @@ body::before {
   text-transform: uppercase;
 }
 
-/* ── Cake Scene ── */
+/* ============================================================
+   ── Cake Scene ── (Đã nâng cấp kích thước và hiệu ứng ngọn lửa lung linh)
+   ============================================================ */
 #cake-scene {
   display: none;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: 32px;
+  /* Tăng khoảng cách cho thoáng khi bánh to hơn */
   cursor: pointer;
 }
 
@@ -285,10 +329,11 @@ body::before {
   display: flex;
 }
 
+/* ⚠️ PHÓNG TO KHUNG CHỨA BÁNH (160x180 -> 240x260) */
 .cake-wrapper {
   position: relative;
-  width: 160px;
-  height: 180px;
+  width: 240px;
+  height: 260px;
   animation: floatCake 3.5s ease-in-out infinite;
   will-change: transform;
   isolation: isolate;
@@ -298,39 +343,42 @@ body::before {
 
   0%,
   100% {
-    transform: translateY(0)
+    transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-10px)
+    transform: translateY(-12px);
   }
 }
 
+/* ⚠️ PHÓNG TO ĐĨA ĐỰNG BÁNH */
 .cake-plate {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 180px;
-  height: 14px;
+  width: 270px;
+  height: 18px;
   background: linear-gradient(135deg, #475569 0%, #f8fafc 30%, #cbd5e1 50%, #1e293b 75%, #94a3b8 100%);
   border-radius: 50%;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .cake-layer {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  border-radius: 16px;
+  border-radius: 20px;
+  /* Tăng bo góc cho hợp tỉ lệ mới */
   background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 60%, #cbd5e1 100%);
 }
 
+/* ⚠️ PHÓNG TO TẦNG BÁNH 1 (DƯỚI) */
 .cake-layer-1 {
-  bottom: 14px;
-  width: 140px;
-  height: 58px;
-  box-shadow: inset 0 10px 20px rgba(254, 240, 138, 0.4), inset 0 -6px 12px rgba(15, 23, 42, 0.18), 0 12px 25px rgba(0, 0, 0, 0.5);
+  bottom: 18px;
+  width: 210px;
+  height: 85px;
+  box-shadow: inset 0 12px 24px rgba(254, 240, 138, 0.4), inset 0 -8px 16px rgba(15, 23, 42, 0.18), 0 15px 30px rgba(0, 0, 0, 0.5);
 }
 
 .cake-layer-1::after,
@@ -338,56 +386,127 @@ body::before {
   content: '';
   position: absolute;
   top: -4px;
-  left: 4px;
-  right: 4px;
-  height: 16px;
+  left: 6px;
+  right: 6px;
+  height: 20px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  border-radius: 12px 12px 4px 4px;
+  border-radius: 14px 14px 4px 4px;
   box-shadow: 0 2px 4px rgba(15, 23, 42, 0.1), inset 0 1px 0 #ffffff;
 }
 
+/* ⚠️ PHÓNG TO TẦNG BÁNH 2 (TRÊN) */
 .cake-layer-2 {
-  bottom: 72px;
-  width: 110px;
-  height: 50px;
-  box-shadow: inset 0 10px 18px rgba(254, 240, 138, 0.45), inset 0 -5px 10px rgba(15, 23, 42, 0.18), 0 8px 20px rgba(0, 0, 0, 0.4);
+  bottom: 103px;
+  width: 165px;
+  height: 72px;
+  box-shadow: inset 0 12px 22px rgba(254, 240, 138, 0.45), inset 0 -6px 14px rgba(15, 23, 42, 0.18), 0 10px 24px rgba(0, 0, 0, 0.4);
 }
 
 .cake-dot {
   position: absolute;
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #64748b 100%);
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3), inset 0 1px 0 #ffffff;
 }
 
+/* ⚠️ PHÓNG TO NẾN VÀ ĐIỀU CHỈNH TỌA ĐỘ PHÙ HỢP */
 .candle {
   position: absolute;
-  bottom: 118px;
-  width: 6px;
-  height: 30px;
+  bottom: 175px;
+  /* Đẩy lên đỉnh tầng bánh 2 */
+  width: 8px;
+  height: 40px;
   background: linear-gradient(90deg, #475569 0%, #cbd5e1 50%, #1e293b 100%);
-  border-radius: 3px 3px 1px 1px;
+  border-radius: 4px 4px 1px 1px;
   transform-origin: bottom center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* Định vị lại khoảng cách 4 cây nến cân bằng trên mặt bánh to */
 .candle:nth-child(1) {
-  left: 42px
+  left: calc(50% - 45px);
 }
 
 .candle:nth-child(2) {
-  left: 60px
+  left: calc(50% - 15px);
 }
 
 .candle:nth-child(3) {
-  left: 78px
+  left: calc(50% + 15px);
 }
 
 .candle:nth-child(4) {
-  left: 96px
+  left: calc(50% + 45px);
 }
+
+
+/* ============================================================
+   🔥 HIỆU ỨNG NGỌN LỬA SIÊU SÁNG LAN TỎA MÀN HÌNH
+   ============================================================ */
+
+.candle::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 20px;
+  border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
+  background: linear-gradient(180deg, 
+    rgba(255,255,255,1) 0%, 
+    rgba(254,240,138,1) 30%, 
+    rgba(249,115,22,0.9) 70%, 
+    rgba(239,68,68,0) 100%
+  );
+  
+  /* 🌟 TĂNG CƯỜNG QUẦNG SÁNG: Xếp chồng nhiều tầng bóng mờ để ánh sáng tỏa rộng rực rỡ */
+  box-shadow: 
+    0 -4px 12px rgba(251, 146, 60, 0.9),
+    0 2px 6px rgba(239, 68, 68, 0.6),
+    0 0 20px rgba(254, 240, 138, 0.9),    /* Tâm sáng rực */
+    0 0 60px rgba(251, 146, 60, 0.5),    /* Quầng sáng trung gian */
+    0 0 120px rgba(254, 240, 138, 0.3);  /* Ánh sáng sương mù lan tỏa khắp màn hình */
+    
+  animation: flicker 1.2s ease-in-out infinite alternate, pulseFlame 0.8s ease-in-out infinite alternate;
+  will-change: transform, box-shadow;
+  transform-origin: bottom center;
+}
+
+/* Giữ nguyên delay của 4 cây nến */
+.candle:nth-child(2)::before { animation-delay: 0.15s; }
+.candle:nth-child(3)::before { animation-delay: 0.35s; }
+.candle:nth-child(4)::before { animation-delay: 0.2s; }
+
+@keyframes flicker {
+  0%, 100% { transform: translateX(-50%) rotate(-2deg) scaleX(0.93); }
+  25%      { transform: translateX(-47%) rotate(1.5deg) scaleX(1.04); }
+  50%      { transform: translateX(-53%) rotate(-2.5deg) scaleX(0.96); }
+  75%      { transform: translateX(-48%) rotate(2deg) scaleX(1.06); }
+}
+
+/* 🌟 CẬP NHẬT ANIMATION BẬP BÙNG: Ép các quầng sáng co giãn liên tục để tạo hiệu ứng lửa động */
+@keyframes pulseFlame {
+  0% { 
+    height: 19px; 
+    box-shadow: 
+      0 -4px 12px rgba(251, 146, 60, 0.8),
+      0 0 15px rgba(254, 240, 138, 0.8),
+      0 0 50px rgba(251, 146, 60, 0.4),
+      0 0 90px rgba(254, 240, 138, 0.2);
+  }
+  100% { 
+    height: 24px; /* Lửa bốc cao hơn chút */
+    box-shadow: 
+      0 -5px 16px rgba(251, 146, 60, 1),
+      0 0 30px rgba(254, 240, 138, 1),    /* Đỉnh điểm phát sáng rực */
+      0 0 80px rgba(251, 146, 60, 0.7),   /* Đẩy quầng sáng lan rộng ra */
+      0 0 140px rgba(254, 240, 138, 0.4);
+  }
+}
+
 
 /* ── Unified Chromium Theme ── */
 .btn-mint,
@@ -911,8 +1030,8 @@ body::before {
   animation-delay: 0.32s
 }
 
-.gallery-item:nth-child(9) { 
-  animation-delay: 0.36s 
+.gallery-item:nth-child(9) {
+  animation-delay: 0.36s
 }
 
 @keyframes pinFadeUp {
@@ -1180,4 +1299,8 @@ body::before {
     width: 130px;
     height: 150px;
   }
+}
+
+.candle.out::before {
+  display: none !important;
 }

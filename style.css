@@ -259,7 +259,7 @@ body::before {
 .countdown-label {
   font-family: var(--font-body);
   font-size: clamp(1rem, 3vw, 1.3rem);
-  color: #6c7179;
+  color: #454649;
   letter-spacing: 0.08em;
 }
 

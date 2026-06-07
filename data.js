@@ -11,7 +11,7 @@ const config = {
   /* ── Password ───────────────────────────────────────────── */
   secretPassword: "0806",
   wrongPasswordMessage:
-    "Oopss, sai mất òi. Thử làm lại nhee",
+    "Oopsss, sai mất òi. Thử làm lại nhee",
 
   /* ── Webhook (Discord / Telegram / Make / n8n) ───────────
      Paste your webhook URL here. Leave empty string "" to

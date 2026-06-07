@@ -9,7 +9,7 @@ const config = {
   recipientName: "Hagiang",
 
   /* ── Password ───────────────────────────────────────────── */
-  secretPassword: "11",
+  secretPassword: "0806",
   wrongPasswordMessage:
     "Oopss, sai mất òi. Thử làm lại nhee",
 

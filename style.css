@@ -259,7 +259,7 @@ body::before {
 .countdown-label {
   font-family: var(--font-body);
   font-size: clamp(1rem, 3vw, 1.3rem);
-  color: #89919e;
+  color: #6c7179;
   letter-spacing: 0.08em;
 }
 
@@ -280,7 +280,7 @@ body::before {
   font-family: var(--font-serif);
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 600;
-  color: #616060;
+  color: #2c2c2c;
   line-height: 1;
   min-width: 1.2em;
   text-align: center;

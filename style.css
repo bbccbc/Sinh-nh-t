@@ -280,7 +280,7 @@ body::before {
   font-family: var(--font-serif);
   font-size: clamp(3rem, 10vw, 6rem);
   font-weight: 600;
-  color: var(--text-dark);
+  color: #616060;
   line-height: 1;
   min-width: 1.2em;
   text-align: center;

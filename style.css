@@ -83,8 +83,6 @@ body::before {
   filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.10));
   user-select: none;
   will-change: transform;
-  transform-box: fill-box;       /* thêm */
-  transform-origin: center;      /* thêm */
 }
 
 /* Vị trí từng ảnh — chỉnh top/left/width tuỳ ý */
@@ -92,19 +90,6 @@ body::before {
   /* bỏ hết: width, height, left, top, object-fit, transform, opacity */
   /* tất cả chuyển thành attributes trong <image> tag */
   opacity: 0.15;
-  animation: bgFloat1 7s ease-in-out infinite;
-}
-
-.bg-img--2 {
-  animation: bgFloat2 8s ease-in-out infinite;
-}
-
-.bg-img--3 {
-  animation: bgFloat1 9s ease-in-out infinite 1s;
-}
-
-.bg-img--4 {
-  animation: bgFloat2 7.5s ease-in-out infinite 0.5s;
 }
 
 @keyframes bgFloat1 {

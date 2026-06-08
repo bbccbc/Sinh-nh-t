@@ -46,6 +46,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Tự động ẩn overlay bánh sinh nhật và về giao diện bình thường lúc 01:00 sáng ngày sinh nhật
+function scheduleEndOfBirthdayMode() {
+  const now = new Date();
+  const bdY = config.birthdayYear || now.getFullYear();
+  // Thời điểm kết thúc: 01:00:00 sáng ngày sinh nhật
+  const end = new Date(bdY, config.birthdayMonth - 1, config.birthdayDay, 1, 0, 0, 0);
+  const msUntilEnd = end - now;
+  if (msUntilEnd > 0) {
+    setTimeout(() => {
+      bdOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      birthdayMode = false;
+      startNormalFlow();
+    }, msUntilEnd);
+  }
+}
+
 // ── Birthday Time Check ───────────────────────────────────────
 function isBirthdayCountdownTime() {
   const now = new Date();
@@ -59,7 +76,13 @@ function isBirthdayCountdownTime() {
 
 function isBirthdayTime() {
   const now = new Date();
-  return (now.getMonth() + 1 === config.birthdayMonth && now.getDate() === config.birthdayDay);
+  const m = now.getMonth() + 1;
+  const d = now.getDate();
+  const h = now.getHours();
+  const bdM = config.birthdayMonth;
+  const bdD = config.birthdayDay;
+  // Chỉ đúng từ 00:00 đến 00:59 sáng ngày sinh nhật
+  return (m === bdM && d === bdD && h < 1);
 }
 
 // ── Birthday Mode ─────────────────────────────────────────────
@@ -70,6 +93,8 @@ function startBirthdayMode() {
   
   if (isBirthdayTime()) {
     showCakeScene();
+    // Lên lịch tự động kết thúc birthday mode vào cuối ngày sinh nhật
+    scheduleEndOfBirthdayMode();
   } else {
     cakeScene.classList.remove('visible');
     countBlock.style.display = 'flex';

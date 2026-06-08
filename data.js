@@ -54,7 +54,8 @@ Không biết lúc cậu mở được bức thư này ra là mấy giờ ngày 
 Tớ mong cậu sẽ thích món quà tớ tặng, mặc dù theo tớ thí thì nó hơi lộn xộn và nhiều thứ chưa đúng ý tớ lắm. Có thể nói đây là lần tặng quà đặc biệt nhất của tớ, tớ đã vừa học vừa làm để hoàn thành món quà này.
 Cậu đã nhận được bình và hoa chưa? Lúc chọn quà tớ mới nghĩ là không biết tặng gì thì cậu sẽ thích nhỉ? Tớ nghĩ cậu là người thích trang trí nhà, vậy nên chắc có thêm bình hoa nữa thì quá trời tuyệt vời rùi! Thế là tớ mua luôn. Không biết hoa có thơm không nhỉ? Trời nắng quá tớ mong là hoa không bị héo khi tới tay cậu.
 Đừng quá xúc động nka 😏Tớ đã thấy những người biết code rất ngầu, giờ tớ vẫn thí ngầu. Tớ sẽ cố gắng chăm chỉ học hành để món quà lần sau hoàn thiện hơnn nhé… Đảm bảo quà là độc nhất vô nhị 01 ai có ❤️
-Giữ gìn sức khỏe nhé! Đừng để bị ốm nữa nhé <3`,
+Giữ gìn sức khỏe nhé! Đừng để bị ốm nữa nhé <3
+P/s: Bật mí là trò ghép hình có thể hack đc bằng "Ctrl + Shift + H" kkkkk`,
 
   /* ── Birthday Countdown (June 7 23:00 → June 8 00:00) ─── */
   birthdayYear: 2025,   // Change year if needed
